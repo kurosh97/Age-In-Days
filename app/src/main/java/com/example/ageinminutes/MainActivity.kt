@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val btn = findViewById<Button>(R.id.btnDatePicker) as Button
+
         btn.setOnClickListener { view ->
             clickDatePicker(view)
         }
@@ -31,38 +32,39 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.N)
     fun clickDatePicker(view: View) {
 
-        val tvSD = findViewById<TextView>(R.id.tvSelectedDate)
-        val tvSDIM = findViewById<TextView>(R.id.tvSelectedDateInMinutes)
         val myCalander = Calendar.getInstance()
+
         val year = myCalander.get(Calendar.YEAR)
         val month = myCalander.get(Calendar.MONTH)
-        val dayOfMonth = myCalander.get(Calendar.DAY_OF_MONTH)
+        val day = myCalander.get(Calendar.DAY_OF_MONTH)
+
+        val tvSD = findViewById<TextView>(R.id.tvSelectedDate)
+        val tvSDIM = findViewById<TextView>(R.id.tvSelectedDateInMinutes)
 
 
-        val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener
-        { view, SelectedYear, SelectedMonth, SelectedDayOfMonth ->
-            Toast.makeText(this,
-                    "The chosen year: $SelectedYear The chosen month: $SelectedMonth The chosen day: $SelectedDayOfMonth",
-                    Toast.LENGTH_LONG).show()
+        val dpd = DatePickerDialog(
+                this,
+                DatePickerDialog.OnDateSetListener { view, SelectedYear, SelectedMonth, SelectedDayOfMonth ->
+                    val selectedDate = "$SelectedDayOfMonth/${SelectedMonth + 1}/$SelectedYear"
+                    tvSD.setText(selectedDate)
 
-            val selectedDate = "$SelectedYear/${SelectedMonth + 1}/$SelectedDayOfMonth"
-            val sdf = SimpleDateFormat("DD/MM/YYYY")
-            val theDate = sdf.parse(selectedDate)
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+                    val theDate = sdf.parse(selectedDate)
 
-            val selectedDateInMinutes = theDate!!.time / 60000
-            tvSD.setText(theDate.toString())
-
-
-            val currentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
-            val currentDateInMinutes = currentDate!!.time / 60000
+                    val selectedDateInMinutes = theDate!!.time / 60000
+                    val selectedDateInDays = selectedDateInMinutes / (60 * 24)
 
 
-            val differenceInMinutes = currentDateInMinutes - selectedDateInMinutes
-            tvSDIM.setText(differenceInMinutes.toString())
+                    val currentDate = sdf.parse(sdf.format(System.currentTimeMillis()))
+                    val currentDateInMinutes = currentDate!!.time / 60000
+                    val currentDateInDays = currentDateInMinutes / (60 * 24)
 
-        }, year, month, dayOfMonth)
-        dpd.datePicker.setMaxDate(Date().time - 86400000)
+                    val differenceInMinutes = currentDateInDays - selectedDateInDays
+                    tvSDIM.setText(differenceInMinutes.toString())
 
+                }, year, month, day)
+
+        dpd.datePicker.maxDate = Date().time - 86400000
         dpd.show()
     }
 }

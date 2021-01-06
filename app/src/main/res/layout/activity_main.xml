@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="IN MINUTES"
+        android:text="IN DAYS"
         android:textColor="@color/textColor"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:text="In minutes till date"
+        android:text="In days till date"
         android:textColor="@color/lightGreyTextColor"
         android:textSize="20sp"
         android:textStyle="bold" />
